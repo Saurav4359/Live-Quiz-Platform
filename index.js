@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { signup, signin } = require("./validation/zod");
 const { UsersModel, Dbconnect, QuizModel, QuestionModel } = require("./Schemas/db");
 const { jwt_key, middleware } = require("./middlewares/authMiddlewares");
+const { ws } = require("./ws");
 
 const app = express();
 app.use(express.json());
@@ -197,6 +198,7 @@ app.get("/api/quiz/:quizId", middleware, async (req, res) => {
 //---------------------------------------------------------
 try {
   Dbconnect();
+  ws();
   app.listen(3000, () => {
     console.log("Port running on 3000");
   });
