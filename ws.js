@@ -80,34 +80,23 @@ function ws() {
       const message = JSON.parse(data);
       console.log("step3");
 
-      if (socket.isAuth) {
-        console.log("step4");
-        if (message.type === "chat") {
-          user.forEach((x) => {
-            if (x === socket) {
-              x.send(message.prop);
+      if (message.type === "join-quiz") {
+        console.log("step5");
+        if (socket.role === "admin") {
+          console.log("step6");
+          const quiz = await QuizModel.findOne({
+            _id: quizId,
+          });
+          if (quiz) console.log("step7");
+          console.log(quiz);
+          userSocket.forEach((x) => {
+              {
+              x.send(JSON.stringify(quiz));
             }
           });
         }
-
-        if (type === "join-quiz") {
-          console.log("step5");
-          if (socket.role === "admin") {
-            console.log("step6");
-            const quiz = await QuizModel.findOne({
-              _id: quizId,
-            });
-            if (quiz) console.log("step7");
-            console.log(quiz);
-            user.forEach((x) => {
-              if (x === socket) {
-                x.send(JSON.stringify(quiz));
-              }
-            });
-          }
-        } else {
-          socket.send("Invalid User");
-        }
+      } else {
+        socket.send("Invalid User");
       }
     });
   });
