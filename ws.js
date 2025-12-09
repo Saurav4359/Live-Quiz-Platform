@@ -8,6 +8,8 @@ function ws() {
   const wss = new WebSocketServer({ port: 8080 });
   console.log(" step1");
   let user = [];
+  let userSocket = [];
+  let adminSocket = [];
   // rooms = {
   //   room1: {
   //     roomId,
@@ -43,21 +45,36 @@ function ws() {
 }
     */
     const token = query.token;
+    const quizId = query.quizId;
+    const type = query.type;
+    console.log(type);
+
     try {
-      const decode = jwt.verify(message.token, jwt_key);
+      const decode = jwt.verify(token, jwt_key);
       socket.UserId = decode.UserId;
       socket.role = decode.role;
       socket.isAuth = true;
       socket.send("Authenticated");
+      // for session out , can you this method
+      // setTimeout(() => {
+      //   socket.send("Server Time Out").close(1008,"Server timeout");
+      // }, 1000*60);
 
       //user.forEach((x) => x.send(JSON.stringify(socket)));
     } catch (e) {
       socket.send("Invalid Token");
-      socket.close();
+      socket.close(1008, "Invalid token");
     }
-    user.push(socket);
-    socket.isAuth = false;
-    console.log("step2");
+
+    if (socket.role === "student") {
+      userSocket.push(socket);
+    } else if (socket.role === "admin") {
+      adminSocket.push(socket);
+    } else {
+      socket.send("Invalid connection").close(1006, "Invalid connection");
+    }
+
+    //console.log("step2");
     //---------------------------------------------
     socket.on("message", async (data) => {
       const message = JSON.parse(data);
@@ -73,17 +90,12 @@ function ws() {
           });
         }
 
-        /*
-      { "type" :  "join-quiz",
-        "QuizId": "87otygkh"
-      }
-      */
-        if (message.type === "join-quiz") {
+        if (type === "join-quiz") {
           console.log("step5");
           if (socket.role === "admin") {
             console.log("step6");
             const quiz = await QuizModel.findOne({
-              _id: message.QuizId,
+              _id: quizId,
             });
             if (quiz) console.log("step7");
             console.log(quiz);
@@ -93,9 +105,9 @@ function ws() {
               }
             });
           }
+        } else {
+          socket.send("Invalid User");
         }
-      } else {
-        socket.send("Invalid User");
       }
     });
   });

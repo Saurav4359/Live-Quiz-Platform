@@ -60,6 +60,7 @@ app.post("/api/auth/login", async (req, res) => {
   });
   if (user) {
     const token = jwt.sign({ userId: user._id ,role : user.role}, jwt_key);
+    //const token = jwt.sign({ userId: user._id ,role : user.role}, jwt_key,{expiresIn: "1m"}); can do this for sessions
     res.status(200).json({
       success,
       data: {
