@@ -1,10 +1,11 @@
 import express from "express";
-import { Signup } from "./controller/controller.js";
+import { Signin, Signup } from "./controller/controller.js";
 import { dbConnection } from "./utils/dbConnection.js";
 const route = express.Router();
 const app = express();
 app.use(express.json());
 route.post("/signup", Signup);
+route.post("/signin", Signin);
 app.use("/auth", route);
 async function server() {
     try {

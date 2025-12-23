@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controller/controller.ts","./src/models/schema.ts","./src/utils/dbconnection.ts","./src/utils/error.ts","./src/validation/signin.ts","./src/validation/signup.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/controller/controller.ts","./src/models/schema.ts","./src/utils/dbconnection.ts","./src/utils/error.ts","./src/utils/jwt/bcrypt.ts","./src/validation/signin.ts","./src/validation/signup.ts"],"version":"5.9.3"}
