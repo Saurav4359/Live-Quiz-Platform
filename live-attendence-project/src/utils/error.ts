@@ -14,7 +14,7 @@ const code_message: Record<number, string> = {
   User: "User not found",
   Teacher: "Forbidden, not class teacher",
 };
-export const error = (code: number, message?: string): error_message => {
+export const errors = (code: number, message?: string): error_message => {
   if (message) {
     return {
       success: false,
@@ -27,3 +27,15 @@ export const error = (code: number, message?: string): error_message => {
     error: code_message[code] ?? "Unknown error",
   };
 };
+
+interface IResponse {
+  success : true;
+  data : object;
+}
+
+export const response = (data: object):IResponse=> {
+     return {
+      success : true,
+      data : data
+     }
+}
