@@ -8,7 +8,7 @@ const code_message: Record<number, string> = {
   401: "Unauthorized, token missing or invalid",
   403: "Forbidden, teacher access required",
 };
-export const resource_error: Record<string, string> = {
+  const resource_error: Record<string, string> = {
   Student: "Student not found",
   Class: "Class not found",
   User: "User not found",

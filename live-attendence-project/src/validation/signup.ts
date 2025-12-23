@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const signup = z.object({
+export const signup = z.object({
   name: z.string().trim().min(1),
   email: z.string().email(),
   password: z.string().min(5),
