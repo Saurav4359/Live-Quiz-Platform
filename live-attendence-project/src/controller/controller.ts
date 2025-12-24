@@ -3,7 +3,9 @@ import { signup } from "../validation/signup.js";
 import type { Response, Request } from "express";
 import { errors, response } from "../utils/error.js";
 import { signin } from "../validation/signin.js";
-import { hash, password_check, token } from "../utils/jwt/bcrypt.js";
+import { hash, password_check, token } from "../utils/bcrypt.js";
+import { string } from "zod";
+import { Types } from "mongoose";
 
 export const Signup = async (req: Request, res: Response) => {
   const { success, data, error } = signup.safeParse(req.body);
@@ -32,11 +34,19 @@ export const Signin = async (req: Request, res: Response) => {
   });
   if (existuser) {
     if (await password_check(data.password, existuser.password)) {
-      const tokens=token({ userId: existuser._id, role: existuser.role });
+      const tokens = token({ userId: existuser._id, role: existuser.role });
       console.log(tokens);
-      res
-        .status(200)
-        .json(response({tokens}));
+      res.status(200).json(response({ tokens }));
     }
   } else return res.json(errors(400));
 };
+
+export const Me = async (req :Request, res : Response) => {
+   const userId=req.userId;
+    const user = await users.findOne({
+      _id: new Types.ObjectId(userId) 
+    }) 
+     if(!user) {
+      return res.json(errors(400,"Student"));
+     }
+}

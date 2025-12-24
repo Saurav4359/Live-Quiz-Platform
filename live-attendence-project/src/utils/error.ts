@@ -14,7 +14,7 @@ const code_message: Record<number, string> = {
   User: "User not found",
   Teacher: "Forbidden, not class teacher",
 };
-export const errors = (code: number, message?: string): error_message => {
+export const errors = (code: number, message?: string ): error_message => {
   if (message) {
     return {
       success: false,
